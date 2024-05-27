@@ -1,0 +1,84 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: feri2
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: product-serverless-managment
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  environment:
+    PRODUCTS_TABLE: ${self:service}-products
+    UPLOAD_BUCKET: ${self:service}-uploads
+
+plugins:
+  - serverless-offline
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - local
+
+functions:
+  createProduct:
+    handler: handler.createProduct
+    products:
+      - http:
+          path: /products
+          method: post
+          cors: true
+
+  getProducts:
+    handler: handler.getProducts
+    products:
+      - http:
+          path: /products
+          method: get
+          cors: true
+
+  getProduct:
+    handler: handler.getProduct
+    products:
+      - http:
+          path: /products/{id}
+          method: get
+          cors: true
+
+  updateProduct:
+    handler: handler.updateProduct
+    products:
+      - http:
+          path: /products/{id}
+          method: put
+          cors: true
+
+  deleteProduct:
+    handler: handler.deleteProduct
+    products:
+      - http:
+          path: /products/{id}
+          method: delete
+          cors: true
+
+resources:
+  Resources:
+    ProductsDynanoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.PRODUCTS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+  UploadsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:provider.environment.UPLOAD_BUCKET}

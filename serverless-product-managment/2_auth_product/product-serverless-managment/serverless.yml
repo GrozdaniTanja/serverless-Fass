@@ -6,10 +6,10 @@ service: product-serverless-managment
 provider:
   name: aws
   runtime: nodejs20.x
-region: us-east-1
+  region: us-east-1
   environment:
     PRODUCTS_TABLE: ${self:service}-products
-    JWT_SECRET: your_jwt_secret_key # Replace with a secure key
+    JWT_SECRET: your_jwt_secret_key
 
 plugins:
   - serverless-offline
@@ -23,7 +23,7 @@ custom:
 functions:
   createProduct:
     handler: handler.createProduct
-    products:
+    events:
       - http:
           path: /products
           method: post
@@ -31,7 +31,7 @@ functions:
 
   getProducts:
     handler: handler.getProducts
-    products:
+    events:
       - http:
           path: /products
           method: get
@@ -39,7 +39,7 @@ functions:
 
   getProduct:
     handler: handler.getProduct
-    products:
+    events:
       - http:
           path: /products/{id}
           method: get
@@ -47,7 +47,7 @@ functions:
 
   updateProduct:
     handler: handler.updateProduct
-    products:
+    events:
       - http:
           path: /products/{id}
           method: put
@@ -55,7 +55,7 @@ functions:
 
   deleteProduct:
     handler: handler.deleteProduct
-    products:
+    events:
       - http:
           path: /products/{id}
           method: delete
@@ -63,19 +63,19 @@ functions:
 
   sendProductSummary:
     handler: handler.sendProductSummary
-    products:
+    events:
       - schedule:
           rate: rate(1 day)
 
   hourlyTask:
     handler: handler.hourlyTask
-    products:
+    events:
       - schedule:
           rate: rate(1 hour)
 
   handleSnsNotification:
     handler: handler.handleSnsNotification
-    products:
+    events:
       - sns: productNotification
 
 resources:

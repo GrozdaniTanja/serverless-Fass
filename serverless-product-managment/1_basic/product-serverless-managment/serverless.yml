@@ -3,8 +3,6 @@ org: feri2
 # "service" is the name of this project. This will also be added to your AWS resource names.
 service: product-serverless-managment
 
-frameworkVersion: "3"
-
 provider:
   name: aws
   runtime: nodejs20.x
@@ -25,7 +23,7 @@ custom:
 functions:
   createProduct:
     handler: handler.createProduct
-    products:
+    events:
       - http:
           path: /products
           method: post
@@ -33,7 +31,7 @@ functions:
 
   getProducts:
     handler: handler.getProducts
-    products:
+    events:
       - http:
           path: /products
           method: get
@@ -41,7 +39,7 @@ functions:
 
   getProduct:
     handler: handler.getProduct
-    products:
+    events:
       - http:
           path: /products/{id}
           method: get
@@ -49,7 +47,7 @@ functions:
 
   updateProduct:
     handler: handler.updateProduct
-    products:
+    events:
       - http:
           path: /products/{id}
           method: put
@@ -57,7 +55,7 @@ functions:
 
   deleteProduct:
     handler: handler.deleteProduct
-    products:
+    events:
       - http:
           path: /products/{id}
           method: delete

@@ -5,7 +5,7 @@ const AWS = require('aws-sdk');
 const uuid = require('uuid');
 
 const docClient = new AWS.DynamoDB.DocumentClient({
-  endpoint: 'http://localhost:4566', // Localstack DynamoDB endpoint
+  endpoint: 'http://127.0.0.1:4566', // Localstack DynamoDB endpoint
   region: 'us-east-1'
 });
 

@@ -5,7 +5,7 @@ const uuid = require('uuid');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const docClient = new AWS.DynamoDB.DocumentClient({
-  endpoint: 'http://localhost:4566', // Local DynamoDB endpoint
+  endpoint: 'http://127.0.0.1:4566', // Local DynamoDB endpoint
   region: 'us-east-1'
 });
 
